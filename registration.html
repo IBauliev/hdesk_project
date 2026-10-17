@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HDesk — Регистрация</title>
+<style>
+  :root {
+    --brand: #26879b;
+    --brand-dark: #1f7081;
+    --border: #d3d7db;
+    --label: #5f6670;
+    --placeholder: #a9aeb4;
+    --error: #d64545;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    font-family: "Open Sans", "Segoe UI", Arial, sans-serif;
+  }
+  .card {
+    width: 360px;
+    max-width: 100%;
+    padding: 24px 16px;
+  }
+  .logo {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+  }
+  .row { display: flex; gap: 14px; }
+  .row .field { flex: 1; min-width: 0; }
+  .field { margin-bottom: 18px; }
+  .field label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 11px;
+    color: var(--label);
+  }
+  .input-wrap { position: relative; }
+  .field input[type="text"],
+  .field input[type="email"],
+  .field input[type="password"] {
+    width: 100%;
+    height: 38px;
+    padding: 0 12px;
+    font-size: 13px;
+    font-family: inherit;
+    color: #222;
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    outline: none;
+    background: #fff;
+    transition: border-color .15s;
+  }
+  .field input::placeholder { color: var(--placeholder); }
+  .field input:focus { border-color: var(--brand); }
+  .field.invalid input { border-color: var(--error); }
+  .has-toggle input { padding-right: 42px !important; }
+  .toggle {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 42px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: 0;
+    cursor: pointer;
+    color: #7b8289;
+  }
+  .toggle:hover { color: var(--brand); }
+  .agree {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 4px 0 14px;
+    font-size: 11px;
+    color: var(--label);
+  }
+  .agree input {
+    width: 15px;
+    height: 15px;
+    margin: 0;
+    accent-color: var(--brand);
+    cursor: pointer;
+  }
+  .agree a {
+    color: var(--brand);
+    text-decoration: underline;
+  }
+  .error {
+    min-height: 14px;
+    margin-bottom: 8px;
+    font-size: 11px;
+    color: var(--error);
+    text-align: center;
+  }
+  .btn {
+    display: block;
+    width: 100%;
+    height: 42px;
+    border: 0;
+    border-radius: 5px;
+    background: var(--brand);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background .15s;
+  }
+  .btn:hover { background: var(--brand-dark); }
+  .login-link {
+    margin-top: 12px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--label);
+  }
+  .login-link a {
+    margin-left: 14px;
+    color: var(--brand);
+    font-weight: 700;
+    text-decoration: underline;
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">
+      <img src="images/logo.png" alt="HDesk">
+    </div>
+
+    <form id="regForm" novalidate>
+      <div class="row">
+        <div class="field">
+          <label for="firstName">Имя</label>
+          <input type="text" id="firstName" name="firstName" placeholder="Введите имя" autocomplete="given-name">
+        </div>
+        <div class="field">
+          <label for="lastName">Фамилия</label>
+          <input type="text" id="lastName" name="lastName" placeholder="Введите фамилию" autocomplete="family-name">
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="login">Логин</label>
+        <input type="text" id="login" name="login" placeholder="Придумайте логин" autocomplete="username">
+      </div>
+
+      <div class="field">
+        <label for="email">Почта</label>
+        <input type="email" id="email" name="email" placeholder="name@example.com" autocomplete="email">
+      </div>
+
+      <div class="field">
+        <label for="password">Пароль</label>
+        <div class="input-wrap has-toggle">
+          <input type="password" id="password" name="password" placeholder="Минимум 8 символов" autocomplete="new-password">
+          <button type="button" class="toggle" id="toggle" aria-label="Показать пароль">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1.5 12S5.5 5 12 5s10.5 7 10.5 7-4 7-10.5 7S1.5 12 1.5 12z"/>
+              <circle cx="12" cy="12" r="3"/>
+              <line id="slash" x1="3" y1="3" x2="21" y2="21" style="display:none"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <label class="agree">
+        <input type="checkbox" id="agree" name="agree">
+        <span>Я согласен с <a href="terms.html" target="_blank">условиями использования</a></span>
+      </label>
+
+      <div class="error" id="error"></div>
+
+      <button type="submit" class="btn">Зарегистрироваться</button>
+
+      <div class="login-link">
+        Уже есть аккаунт?<a href="login.html">Войти</a>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById('regForm');
+    const errorBox = document.getElementById('error');
+    const pwd = document.getElementById('password');
+    const slash = document.getElementById('slash');
+
+    // Показать / скрыть пароль
+    document.getElementById('toggle').addEventListener('click', () => {
+      const show = pwd.type === 'password';
+      pwd.type = show ? 'text' : 'password';
+      slash.style.display = show ? 'block' : 'none';
+    });
+
+    function fail(input, msg) {
+      errorBox.textContent = msg;
+      if (input) {
+        const f = input.closest('.field');
+        f.classList.add('invalid');
+        input.focus();
+      }
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      errorBox.textContent = '';
+      form.querySelectorAll('.invalid').forEach(el => el.classList.remove('invalid'));
+
+      const data = {
+        firstName: form.firstName.value.trim(),
+        lastName: form.lastName.value.trim(),
+        login: form.login.value.trim(),
+        email: form.email.value.trim(),
+        password: form.password.value
+      };
+
+      if (!data.firstName) return fail(form.firstName, 'Введите имя');
+      if (!data.lastName)  return fail(form.lastName, 'Введите фамилию');
+      if (!data.login)     return fail(form.login, 'Придумайте логин');
+      if (!/^\S+@\S+\.\S+$/.test(data.email)) return fail(form.email, 'Введите корректную почту');
+      if (data.password.length < 8) return fail(form.password, 'Пароль должен быть не короче 8 символов');
+      if (!form.agree.checked) return fail(null, 'Необходимо принять условия использования');
+
+      // Здесь отправьте данные на сервер, например через fetch()
+      console.log('Регистрация:', data);
+      // После успешной регистрации: window.location.href = 'login.html';
+    });
+  </script>
+</body>
+</html>

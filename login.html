@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HDesk — Вход</title>
+<style>
+  :root {
+    --brand: #26879b;
+    --brand-dark: #1f7081;
+    --border: #d3d7db;
+    --label: #5f6670;
+    --placeholder: #a9aeb4;
+    --error: #d64545;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    font-family: "Open Sans", "Segoe UI", Arial, sans-serif;
+  }
+  .card {
+    width: 360px;
+    max-width: 100%;
+    padding: 24px 16px;
+  }
+  .logo {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+  }
+  .field { margin-bottom: 18px; }
+  .field label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 11px;
+    color: var(--label);
+  }
+  .input-wrap { position: relative; }
+  .field input[type="text"],
+  .field input[type="password"] {
+    width: 100%;
+    height: 38px;
+    padding: 0 12px;
+    font-size: 13px;
+    font-family: inherit;
+    color: #222;
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    outline: none;
+    background: #fff;
+    transition: border-color .15s;
+  }
+  .field input::placeholder { color: var(--placeholder); }
+  .field input:focus { border-color: var(--brand); }
+  .field.invalid input { border-color: var(--error); }
+  .has-toggle input { padding-right: 42px !important; }
+  .toggle {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 42px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: 0;
+    cursor: pointer;
+    color: #7b8289;
+  }
+  .toggle:hover { color: var(--brand); }
+  .forgot {
+    text-align: right;
+    margin: -6px 0 14px;
+  }
+  .forgot a {
+    font-size: 11px;
+    color: var(--brand);
+    text-decoration: underline;
+  }
+  .error {
+    min-height: 14px;
+    margin-bottom: 8px;
+    font-size: 11px;
+    color: var(--error);
+    text-align: center;
+  }
+  .btn {
+    display: block;
+    width: 100%;
+    height: 42px;
+    border: 0;
+    border-radius: 5px;
+    background: var(--brand);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background .15s;
+  }
+  .btn:hover { background: var(--brand-dark); }
+  .reg-link {
+    margin-top: 12px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--label);
+  }
+  .reg-link a {
+    margin-left: 14px;
+    color: var(--brand);
+    font-weight: 700;
+    text-decoration: underline;
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">
+      <img src="images/logo.png" alt="HDesk">
+    </div>
+
+    <form id="loginForm" autocomplete="on" novalidate>
+      <div class="field">
+        <label for="login">Логин</label>
+        <input type="text" id="login" name="login" placeholder="Введите логин" autocomplete="username">
+      </div>
+
+      <div class="field">
+        <label for="password">Пароль</label>
+        <div class="input-wrap has-toggle">
+          <input type="password" id="password" name="password" placeholder="Введите пароль" autocomplete="current-password">
+          <button type="button" class="toggle" id="toggle" aria-label="Показать пароль">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1.5 12S5.5 5 12 5s10.5 7 10.5 7-4 7-10.5 7S1.5 12 1.5 12z"/>
+              <circle cx="12" cy="12" r="3"/>
+              <line id="slash" x1="3" y1="3" x2="21" y2="21" style="display:none"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="forgot">
+        <a href="#">Забыли пароль?</a>
+      </div>
+
+      <div class="error" id="error"></div>
+
+      <button type="submit" class="btn">Войти</button>
+
+      <div class="reg-link">
+        Нет аккаунта?<a href="registration.html">Зарегистрироваться</a>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById('loginForm');
+    const errorBox = document.getElementById('error');
+    const pwd = document.getElementById('password');
+    const slash = document.getElementById('slash');
+
+    // Показать / скрыть пароль
+    document.getElementById('toggle').addEventListener('click', () => {
+      const show = pwd.type === 'password';
+      pwd.type = show ? 'text' : 'password';
+      slash.style.display = show ? 'block' : 'none';
+    });
+
+    function fail(input, msg) {
+      errorBox.textContent = msg;
+      input.closest('.field').classList.add('invalid');
+      input.focus();
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      errorBox.textContent = '';
+      form.querySelectorAll('.invalid').forEach(el => el.classList.remove('invalid'));
+
+      const login = form.login.value.trim();
+      const password = form.password.value;
+
+      if (!login) return fail(form.login, 'Введите логин');
+      if (!password) return fail(form.password, 'Введите пароль');
+
+      // Здесь отправьте данные на сервер, например через fetch()
+      console.log('Вход:', login, password);
+    });
+  </script>
+</body>
+</html>
